@@ -13,7 +13,7 @@
         <h1>Lista de Eventos</h1>
         
         
-       <table class="striped">
+        <table>
     <thead>
         <tr>
             <th>Id</th>
@@ -27,13 +27,13 @@
         <!-- O th:each deve ficar exatamente assim na tag tr -->
         <tr th:each="e : ${eventos}">
             <td th:text="${e.id}">1</td>
-            <td th:text="${e.nome}">Nome do evento</td>
+            <td><a th:href="@{/eventos/{id} (id=${e.id})}"><span th:text="${e.nome}" >Nome do evento</span></a></td>
             <td th:text="${e.local}">Local do evento</td>
             <td th:text="${e.data}">Data</td>
             <td th:text="${e.horario}">Horário</td>
         </tr>
     </tbody>
-</table>
+</table>        
     </div>
 
 </body>
