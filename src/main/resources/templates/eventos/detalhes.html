@@ -1,96 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Detalhes do Evento</title>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <meta charset="UTF-8">
+    <title>Detalhes do Evento</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+    <!-- Material Icons (Ícones do Google Materialize) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 
-	<div th:replace="~{menu :: menu}"></div>
+    <div th:replace="~{menu :: menu}"></div>
 
-	<div class="container">
-		<h1>Detalhes do Evento</h1>
+    <div class="container">
+        <h1>Detalhes do Evento</h1>
 
-		<div class="row">
-			<div class="col s12">
-				<div class="card">
-					<div class="card-content">
-						<span class="card-title">Evento</span>
-						<p>
-							<strong>Id: </strong><span th:text="${evento.id}">1</span>
-						</p>
-						<p>
-							<strong>Nome: </strong><span th:text="${evento.nome}">Aniversário
-								de José</span>
-						</p>
-						<p>
-							<strong>Local: </strong><span th:text="${evento.local}">Clube</span>
-						</p>
-						<p>
-							<strong>Data: </strong><span th:text="${evento.data}">25/02/2021</span>
-						</p>
-						<p>
-							<strong>Horário: </strong><span th:text="${evento.horario}">22:00</span>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+        <!-- Card de detalhes do Evento -->
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Evento</span>
+                <p><strong>Id:</strong> <span th:text="${evento.id}"></span></p>
+                <p><strong>Nome:</strong> <span th:text="${evento.nome}"></span></p>
+                <p><strong>Local:</strong> <span th:text="${evento.local}"></span></p>
+                <p><strong>Data:</strong> <span th:text="${evento.data}"></span></p>
+                <p><strong>Horário:</strong> <span th:text="${evento.horario}"></span></p>
+            </div>
+        </div>
 
-		<div class="row">
-			<div class="col s12">
-				<div class="card">
-					<div class="card-content">
-						<span class="card-title">Adicionar Convidado:</span>
+        <!-- Formulário para Adicionar Convidado -->
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Adicionar Convidado:</span>
+                <form th:action="@{/eventos/{idEvento}(idEvento=${evento.id})}" method="post">
+                    <div class="input-field">
+                        <input type="text" name="nome" id="nome" required>
+                        <label for="nome">Nome:</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" name="rg" id="rg" required>
+                        <label for="rg">Rg:</label>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit">Salvar</button>
+                    <button class="btn waves-effect waves-light" type="reset">Limpar</button>
+                </form>
+            </div>
+        </div>
 
-						<!-- A tag form agora envolve todos os campos e botões -->
-						<form th:action="@{/eventos/{idEvento}(idEvento=${evento.id})}"
-							method="post">
-							<div>
-								<label>Nome: </label> <input type="text" name="nome">
-							</div>
-							<div>
-								<label>Rg: </label> <input type="text" name="rg">
-							</div>
-							<div>
-								<button type="submit" class="btn">Salvar</button>
-								<button type="reset" class="btn">Limpar</button>
-							</div>
-						</form>
+        <!-- Tabela de Convidados com o Ícone de Deletar -->
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Convidados</span>
+                <table class="highlight">
+                    <thead>
+                        <tr>
+                            <th>Id:</th>
+                            <th>Nome:</th>
+                            <th>Rg:</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c : ${convidados}">
+                            <td th:text="${c.id}">1</td>
+                            <td th:text="${c.nome}">Nome</td>
+                            <td th:text="${c.rg}">RG</td>
+                            <td>
+                                <a th:href="@{/eventos/{idEvento}/convidados/{idConvidado}/remover(idEvento=${evento.id}, idConvidado=${c.id})}">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col s12">
-				<div class="card">
-					<div class="card-content">
-						<span class="card-title">Convidados</span>
-						<table class="highlight">
-						<thead>
-							<tr>
-								<th>Id:</th>
-								<th>Nome:</th>
-								<th>Rg:</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="c : ${convidados}">
-							<td th:text="${c.id}">1</td>
-							<td th:text="${c.nome}">Mariana</td>
-							<td th:text="${c.rg}">4354</td>
-							</tr>
-						</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
+    </div>
 
-	</div>
-
+    <!-- JavaScript do Materialize -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

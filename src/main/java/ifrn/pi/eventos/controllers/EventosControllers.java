@@ -63,16 +63,15 @@ public class EventosControllers {
 		md.addObject("convidados", convidados);
 
 		return md;
-
 	}
+
 	@PostMapping("/{idEvento}")
-	public String salvarConvidados(@PathVariable Long idEvento, Convidado convidado){
-		
+	public String salvarConvidados(@PathVariable Long idEvento, Convidado convidado) {
 		System.out.println("Id do evento: " + idEvento);
 		System.out.println(convidado);
 		
 		Optional<Evento> opt = er.findById(idEvento);
-		if(opt.isEmpty()) {
+		if (opt.isEmpty()) {
 			return "redirect:/eventos";
 		}
 		
@@ -82,21 +81,37 @@ public class EventosControllers {
 		cr.save(convidado);
 		
 		return "redirect:/eventos/{idEvento}";
-		
 	}
-	
+
 	@GetMapping("/{id}/remover")
 	public String apagarEvento(@PathVariable Long id) {
-		
 		Optional<Evento> opt = er.findById(id);
 		
-		if(!opt.isEmpty()) {
-
-			er.delete(opt.get());
+		if (!opt.isEmpty()) {
+			Evento evento = opt.get();
+			
+			// 1. Busca todos os convidados vinculados ao evento
+			List<Convidado> convidados = cr.findByEvento(evento);
+			
+			// 2. Apaga primeiro todos os convidados para evitar o erro de chave estrangeira (Foreign Key)
+			cr.deleteAll(convidados);
+			
+			// 3. Apaga o evento
+			er.delete(evento);
 		}
 		
-		return"redirect:/eventos";
-		
+		return "redirect:/eventos";
 	}
-	
+
+	// NOVO MÉTODO: Para remover um convidado específico da lista do evento
+	@GetMapping("/{idEvento}/convidados/{idConvidado}/remover")
+	public String apagarConvidado(@PathVariable Long idEvento, @PathVariable Long idConvidado) {
+		Optional<Convidado> opt = cr.findById(idConvidado);
+		
+		if (!opt.isEmpty()) {
+			cr.delete(opt.get());
+		}
+		
+		return "redirect:/eventos/" + idEvento;
+	}
 }
