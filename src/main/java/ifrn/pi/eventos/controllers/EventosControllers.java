@@ -85,4 +85,18 @@ public class EventosControllers {
 		
 	}
 	
+	@GetMapping("/{id}/remover")
+	public String apagarEvento(@PathVariable Long id) {
+		
+		Optional<Evento> opt = er.findById(id);
+		
+		if(!opt.isEmpty()) {
+
+			er.delete(opt.get());
+		}
+		
+		return"redirect:/eventos";
+		
+	}
+	
 }
