@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Convidado {
@@ -12,7 +13,11 @@ public class Convidado {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotBlank(message = "O nome do convidado não pode ser vazio.")
 	private String nome;
+
+	@NotBlank(message = "O RG do convidado não pode ser vazio.")
 	private String rg;
 
 	@ManyToOne
@@ -54,7 +59,4 @@ public class Convidado {
 	public String toString() {
 		return "Convidado [id=" + id + ", nome=" + nome + ", rg=" + rg + ", evento=" + evento + "]";
 	}
-	
-	
-
 }

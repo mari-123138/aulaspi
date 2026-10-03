@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
-    <title>Adicionar Evento</title>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+<title>Adicionar Evento</title>
 </head>
 <body>
 
-    <div th:replace="~{menu :: menu}"></div>
- 
-    <div class="container">
-        <h1>Adicionar Evento</h1>
+	<div th:replace="~{menu :: menu}"></div>
 
-        <form action="/eventos" method="post">
-        	 <div>
-                <input type="hidden" name="id" th:value="${evento.id}" readonly="readonly">	
-            </div>
-            <div>
-                <label>Nome:</label> <input type="text" name="nome" th:value="${evento.nome}">	
-            </div>
-            <div>
-                <label>Local:</label> <input type="text" name="local" th:value="${evento.local}">		
-            </div>
-            <div>
-                <label>Data:</label> <input type="text" name="data" th:value="${evento.data}">		
-            </div>
-            <div>
-                <label>Horário:</label> <input type="text" name="horario" th:value="${evento.horario}">		
-            </div>
-            <div style="margin-top: 20px;">
-                <button class="waves-effect waves-light btn" type="submit">Salvar</button>	
-                <button class="waves-effect waves-light btn red lighten-1" type="reset">Limpar</button>	
-            </div>
-        </form>
-    </div>
-	
+	<div class="container">
+		<h1>Adicionar Evento</h1>
+
+		<form action="/eventos" method="post" th:object="${evento}">
+			<div>
+				<input type="hidden" th:field="*{id}" readonly="readonly">
+			</div>
+			<div>
+				<label>Nome:</label> <input type="text" th:field="*{nome}">
+				<p th:errors="*{nome}"></p>
+			</div>
+			<div>
+				<label>Local:</label> <input type="text" th:field="*{local}">
+				<p th:errors="*{local}"></p>
+			</div>
+			<div>
+				<label>Data:</label> <input type="date" th:field="*{data}">
+				<p th:errors="*{data}"></p>
+			</div>
+			<div>
+				<label>Horário:</label> <input type="time" th:field="*{horario}">
+				<p th:errors="*{horario}"></p>
+			</div>
+			<div style="margin-top: 20px;">
+				<button class="waves-effect waves-light btn" type="submit">Salvar</button>
+				<button class="waves-effect waves-light btn red lighten-1"
+					type="reset">Limpar</button>
+			</div>
+		</form>
+	</div>
+
 </body>
 </html>
